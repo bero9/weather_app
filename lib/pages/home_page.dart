@@ -68,11 +68,11 @@ class _HomePageState extends State<HomePage> {
                     flex: 3,
                   ),
                   Text(
-                   Provider.of<WeatherProvider>(context).cityName! ,
+                    Provider.of<WeatherProvider>(context).cityName!,
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'updated  : 13,23,3',
+                    'update at : ${weatherData!.date.hour.toString()}:${weatherData!.date.minute.toString()}',
                     style: TextStyle(
                       fontSize: 22,
                     ),

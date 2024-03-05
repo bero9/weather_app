@@ -33,6 +33,9 @@ class SearchPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
+            onChanged: (data){
+              cityName = data;
+            },
             onSubmitted: (data) async {
               cityName = data;
               WeatherService service = WeatherService();
@@ -40,16 +43,31 @@ class SearchPage extends StatelessWidget {
               WeatherModel weather =
                   await service.getWeather(cityName: cityName!);
 
-              Provider.of<WeatherProvider>(context,listen: false).weatherData =weather;
-              Provider.of<WeatherProvider>(context,listen: false).cityName =cityName;
+              Provider.of<WeatherProvider>(context, listen: false).weatherData =
+                  weather;
+              Provider.of<WeatherProvider>(context, listen: false).cityName =
+                  cityName;
               Navigator.pop(context);
-
             },
-            decoration: const InputDecoration(
+            decoration:  InputDecoration(
               label: Text('search'),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 32, horizontal: 42),
-              suffixIcon: Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () async{
+                  WeatherService service = WeatherService();
+
+                  WeatherModel weather =
+                      await service.getWeather(cityName: cityName!);
+
+                  Provider.of<WeatherProvider>(context, listen: false).weatherData =
+                      weather;
+                  Provider.of<WeatherProvider>(context, listen: false).cityName =
+                      cityName;
+                  Navigator.pop(context);
+                },
+              ),
               border: OutlineInputBorder(),
               hintText: 'Enter a City',
             ),

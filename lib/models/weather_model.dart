@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 class WeatherModel {
-  String date;
+  DateTime date;
   double temp;
   double maxTemp;
   double minTemp;
@@ -16,7 +18,7 @@ class WeatherModel {
     var jsonData = data['forecast']['forecastday'][0];
 
     return WeatherModel(
-        date: data['location']['localtime'],
+        date:DateTime.parse(data['location']['localtime']),
         temp: jsonData['day']['avgtemp_c'],
         maxTemp: jsonData['day']['maxtemp_c'],
         minTemp: jsonData['day']['mintemp_c'],
@@ -24,7 +26,32 @@ class WeatherModel {
   }
 
   String getImage() {
-    print(weatherStateName);
+
+    if (weatherStateName == 'Clear' ||
+        weatherStateName == 'Light Cloud') {
+      return 'assets/images/clear.png';
+    } else if (weatherStateName == 'Thunderstorm' ||
+        weatherStateName == 'Thunder' ) {
+      return 'assets/images/thunderstorm.png';
+    } else if (weatherStateName == 'Snow' ||
+        weatherStateName == 'Hail' ||
+        weatherStateName == 'Sleet') {
+      return 'assets/images/snow.png';
+    } else if (weatherStateName == 'Heavy Rain' ||
+        weatherStateName == 'Showers' ||
+        weatherStateName == 'Patchy rain nearby' ||
+        weatherStateName == 'Moderate rain') {
+      return 'assets/images/rainy.png';
+    } else if (weatherStateName == 'Heavy Cloudy' ||
+        weatherStateName == 'Partly Cloudy') {
+      return 'assets/images/cloudy.png';
+    } else {
+      return 'assets/images/clear.png';
+    }
+  }
+
+  String getThemeColor() {
+
     if (weatherStateName == 'Clear' ||
         weatherStateName == 'Light Cloud') {
       return 'assets/images/clear.png';
