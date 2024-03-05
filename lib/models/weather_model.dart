@@ -23,7 +23,28 @@ class WeatherModel {
         weatherStateName: jsonData['day']['condition']['text']);
   }
 
-  @override
-  String toString(){
-    return super.toString();
-  }}
+  String getImage() {
+    print(weatherStateName);
+    if (weatherStateName == 'Clear' ||
+        weatherStateName == 'Light Cloud') {
+      return 'assets/images/clear.png';
+    } else if (weatherStateName == 'Thunderstorm' ||
+        weatherStateName == 'Thunder' ) {
+      return 'assets/images/thunderstorm.png';
+    } else if (weatherStateName == 'Snow' ||
+        weatherStateName == 'Hail' ||
+        weatherStateName == 'Sleet') {
+      return 'assets/images/snow.png';
+    } else if (weatherStateName == 'Heavy Rain' ||
+        weatherStateName == 'Showers' ||
+        weatherStateName == 'Patchy rain nearby' ||
+        weatherStateName == 'Moderate rain') {
+      return 'assets/images/rainy.png';
+    } else if (weatherStateName == 'Heavy Cloudy' ||
+        weatherStateName == 'Partly Cloudy') {
+      return 'assets/images/cloudy.png';
+    } else {
+      return 'assets/images/clear.png';
+    }
+  }
+}
