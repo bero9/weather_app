@@ -3,12 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/provider/weather_provider.dart';
 import 'package:weather_app/services/weather_services.dart';
-
 import 'home_page.dart';
 
 class SearchPage extends StatelessWidget {
   String? cityName;
-
 
   @override
   Widget build(BuildContext context) {
