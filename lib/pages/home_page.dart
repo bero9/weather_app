@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/main.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/pages/search_page.dart';
-import 'package:weather_app/provider/weather_provider.dart';
+import 'package:weather_app/providers/weather_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -12,8 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  WeatherModel? weatherData;
+  void updateUi() {
+    setState(() {});
+  }
 
+  WeatherModel? weatherData;
   @override
   Widget build(BuildContext context) {
     weatherData = Provider.of<WeatherProvider>(context).weatherData;
@@ -21,26 +26,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              color: Colors.white,
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SearchPage();
-                }));
-              },
-            ),
-          )
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchPage(
+                  updateUi: updateUi,
+                );
+              }));
+            },
+            icon: Icon(Icons.search),
+          ),
         ],
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'Weather App',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text('Weather App'),
       ),
-      body: weatherData == null
+      body: Provider.of<WeatherProvider>(context).weatherData == null
           ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -61,18 +60,31 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           : Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  weatherData!.getThemeColor(),
+                  weatherData!.getThemeColor()[300]!,
+                  weatherData!.getThemeColor()[100]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Spacer(
+                  const Spacer(
                     flex: 3,
                   ),
                   Text(
                     Provider.of<WeatherProvider>(context).cityName!,
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
-                    'update at : ${weatherData!.date.hour.toString()}:${weatherData!.date.minute.toString()}',
+                    'updated at : ${weatherData!.date.hour.toString()}:${weatherData!.date.minute.toString()}',
                     style: TextStyle(
                       fontSize: 22,
                     ),
@@ -81,28 +93,33 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image(image: AssetImage(weatherData!.getImage())),
+                      Image.asset(weatherData!.getImage()),
                       Text(
-                        '${weatherData!.temp.toInt().toString()} ',
+                        weatherData!.temp.toInt().toString(),
                         style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Column(
                         children: [
-                          Text('maxtemp : ${weatherData!.maxTemp.toInt()} '),
-                          Text('mintemp : ${weatherData!.minTemp.toInt()}'),
+                          Text('maxTemp :${weatherData!.maxTemp.toInt()}'),
+                          Text('minTemp : ${weatherData!.minTemp.toInt()}'),
                         ],
-                      )
+                      ),
                     ],
                   ),
                   Spacer(),
                   Text(
-                    weatherData!.weatherStateName.toString(),
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    weatherData!.weatherStateName,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Spacer(
                     flex: 5,
-                  )
+                  ),
                 ],
               ),
             ),
